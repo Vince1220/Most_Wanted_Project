@@ -61,6 +61,14 @@ function searchByTraits(people){
             alert("Invalid Trait");
             return true
         }
+        const value = prompt(`Enter trait ${trait}`);
+        searchCriteria.push({trait,value});
+        continueSearch= confirm ("Do you want to continue searching?");
+        let filteredPeople = people;
+        for(const criteria of searchCriteria){
+            filteredPeople= filteredPeople.filter(person =>[criteria.trait]== criteria.value);
+        }
+        displayPeople("Search Results", filteredPeople)
 
     }
 }
