@@ -41,13 +41,28 @@ function searchPeopleDataSet(people) {
             break;
         case 'traits':
             //! TODO
-            // results = searchByTraits(people);
+           results = searchByTraits(people);
             break;
         default:
             return searchPeopleDataSet(people);
     }
 
     return results;
+}
+
+function searchByTraits(people){
+    let searchCriteria= []
+    let maxCriteria= 5
+    let continueSearch= true
+    while (searchCriteria.length < maxCriteria && continueSearch){
+        const trait= prompt(`Enter Trait ${searchCriteria.length +1}:eyeColor,weight,height,gender,occupation`);
+        const validTraits= ["eyeColor","height","gender","occupation","weight"];
+        if(validTraits.includes(trait)){
+            alert("Invalid Trait");
+            return true
+        }
+
+    }
 }
 
 function searchById(people) {
