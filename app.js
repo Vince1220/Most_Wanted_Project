@@ -140,8 +140,19 @@ function findPersonDecendants(people,person){
         grandchildren.concat(people.filter(p=>p.parents.includes(child.id)))
 
         }
+
+        displayPeople("Children",children);
+        for (let i=0; i< children.length;i++){
+            let grandchildren = people.filter(p.parents.includes(children[i].id));
+            if (grandchildren.length>0){
+                displayPeople("Grandchildren",grandchildren);
+                decendants = decendants.concat(grandchildren);
+                decendants = decendants.concat(findDecendants(grandchildren, people));
+            }
+        }
+        displayPeople("Grandchildren", grandchildren);
     }
-}
+
 
 function displayPeople(displayTitle, peopleToDisplay) {
     const formatedPeopleDisplayText = peopleToDisplay.map(person => `${person.firstName} ${person.lastName}`).join('\n');
