@@ -151,6 +151,20 @@ function mainMenu(person, people) {
     return mainMenu(person, people);
 }
 
+function searchbyEyeColor(people){
+    let eyeColor = promptFor("What is the person's eye color?", chars);
+    let foundPerson = people.filter(function(person){
+      if(person.eyeColor === eyeColor){
+      return true;
+      }
+      else{
+        return false;
+      }
+  })
+  return foundPerson[0];
+  }
+  
+
 function findPersonDecendants(people,person){
     let children = people.filter(p=>p.parents.includes(person.id))
     let grandchildren =[]
