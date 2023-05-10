@@ -98,6 +98,18 @@ function mainMenu(person, people) {
         case "info":
             //! TODO
             // displayPersonInfo(person);
+            alert(`${person.id}`);
+            alert(`${person.firstName}`);
+            alert(`${person.lastName}`);
+            alert(`${person.gender}`);
+            alert(`${person.dob}`);
+            alert(`${person.height}`);
+            alert(`${person.weight}`);
+            alert(`${person.eyeColor}`);
+            alert(`${person.occupation}`);
+            alert(`${person.parents}`);
+            alert(`${person.currentSpouse}`)
+
             break;
         case "family":
             //! TODO
