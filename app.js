@@ -215,4 +215,4 @@ function exitOrRestart(people) {
             return exitOrRestart(people);
     }
 
-}
+} 
