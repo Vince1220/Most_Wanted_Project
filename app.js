@@ -115,11 +115,13 @@ function mainMenu(person, people) {
             //! TODO
             // let personFamily = findPersonFamily(person, people);
             // displayPeople('Family', personFamily);
+            findFamily(people,person)
             break;
         case "descendants":
             //! TODO
             // let personDescendants = findPersonDescendants(person, people);
             // displayPeople('Descendants', personDescendants);
+            findPersonDecendants(people,person)
             break;
         case "quit":
             return;
@@ -128,6 +130,17 @@ function mainMenu(person, people) {
     }
 
     return mainMenu(person, people);
+}
+
+function findPersonDecendants(people,person){
+    let children = people.filter(p=>p.parents.includes(person.id))
+    let grandchildren =[]
+    for (let i=0; i <children.length;i++){
+        let child = children[i];
+        grandchildren.concat(people.filter(p=>p.parents.includes(child.id)))
+
+        }
+    }
 }
 
 function displayPeople(displayTitle, peopleToDisplay) {
