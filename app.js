@@ -153,6 +153,25 @@ function findPersonDecendants(people,person){
         displayPeople("Grandchildren", grandchildren);
     }
 
+    function findFamily(people,person){
+        let spouse = people.filter(p=> p.id === person.currentSpouse)
+        displayPeople("Spouse", spouse)
+        let parents = people.filter(p=> person.parents(p.id))
+        displayPeople("Parents", parents)
+
+        let siblings = people.filter(p=>{
+            if (p.id !== person.id){
+                for(let i=0; i<person.parents.length; i++){
+                if(p.parents.includes(person, parents [i])){
+                    return true
+                }
+            }
+        }
+        return false
+        })
+        displayPeople("Siblings", siblings)
+    }
+
 
 function displayPeople(displayTitle, peopleToDisplay) {
     const formatedPeopleDisplayText = peopleToDisplay.map(person => `${person.firstName} ${person.lastName}`).join('\n');
