@@ -98,6 +98,18 @@ function mainMenu(person, people) {
         case "info":
             //! TODO
             // displayPersonInfo(person);
+            function displayPerson(person){
+                let personInfo =`first name:${person.firstName}\n`;
+                personInfo += `last name:${person.lastName}\n`;
+                personInfo += `id:${person.id}\n`;
+                personInfo += `gender:${person.gender}\n`;
+                personInfo += `dob:${person.dob}\n`;
+                personInfo += `height:${person.height}\n`;
+                personInfo += `weight:${person.weight}\n`;
+                personInfo += `eyecolor:${person.eyeColor}\n`;
+                personInfo += `occupation:${person.occupation}\n`;
+                personInfo += `parents:${person.parents}\n`;
+                personInfo += `currentspouse:${person.currentSpouse}\n`;
             alert(`${person.id}`);
             alert(`${person.firstName}`);
             alert(`${person.lastName}`);
@@ -110,8 +122,8 @@ function mainMenu(person, people) {
             alert(`${person.parents}`);
             alert(`${person.currentSpouse}`)
             alert(displayPersonInfo);
-            let displayPersonInfo= displayPersonInfo(person[0]);
-
+            let displayPersonInfo= displayPerson(person[0]);
+            }
             break;
         case "family":
             //! TODO
@@ -124,7 +136,11 @@ function mainMenu(person, people) {
             //! TODO
             // let personDescendants = findPersonDescendants(person, people);
             // displayPeople('Descendants', personDescendants);
-            findPersonDecendants(people,person)
+            let personDescendants= findPersonDecendants(person[0], people);
+            if (personDescendants.length == 0){
+                alert("No descendant found.")
+            }
+            else (displayPeople(personDescendants));
             break;
         case "quit":
             return;
