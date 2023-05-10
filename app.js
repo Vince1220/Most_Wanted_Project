@@ -109,13 +109,16 @@ function mainMenu(person, people) {
             alert(`${person.occupation}`);
             alert(`${person.parents}`);
             alert(`${person.currentSpouse}`)
+            alert(displayPersonInfo);
+            let displayPersonInfo= displayPersonInfo(person[0]);
 
             break;
         case "family":
             //! TODO
             // let personFamily = findPersonFamily(person, people);
             // displayPeople('Family', personFamily);
-            findFamily(people,person)
+            let personFamily= findFamily(people,person[0])
+            alert(personFamily);
             break;
         case "descendants":
             //! TODO
