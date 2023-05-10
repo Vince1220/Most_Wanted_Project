@@ -172,6 +172,11 @@ function findPersonDecendants(people,person){
         displayPeople("Siblings", siblings)
     }
 
+    function findSpouseId(people, person){
+        const familyMember = people.filter(p=> p.id === person.currentSpouse)
+        return familyMember
+    }
+
 
 function displayPeople(displayTitle, peopleToDisplay) {
     const formatedPeopleDisplayText = peopleToDisplay.map(person => `${person.firstName} ${person.lastName}`).join('\n');
