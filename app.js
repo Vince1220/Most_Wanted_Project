@@ -131,21 +131,18 @@ function mainMenu(person, people) {
     switch (mainMenuUserActionChoice) {
         case "info":
             //! TODO
-            // displayPersonInfo(person);
+             displayPersonInfo(person);
             
             break;
         case "family":
             //! TODO
-            // let personFamily = findPersonFamily(person, people);
-            // displayPeople('Family', personFamily);
-            let personFamily= findFamily(people,person[0])
-            alert(personFamily);
+             let personFamily = findPersonFamily(person, people);
+             displayPeople('Family', personFamily);
             break;
         case "descendants":
             //! TODO
-            // let personDescendants = findPersonDescendants(person, people);
-            // displayPeople('Descendants', personDescendants);
-            let personDescendants= findPersonDecendants(person[0], people);
+            let personDescendants = findPersonDescendants(person, people);
+            displayPeople('Descendants', personDescendants);
             if (personDescendants.length == 0){
                 alert("No descendant found.")
             }
