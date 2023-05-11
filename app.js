@@ -52,26 +52,23 @@ function searchPeopleDataSet(people) {
 
 function searchByTraits(people){
     let searchCriteria= []
-    let maxCriteria= 5
+    let filteredPeople= people;
     let continueSearch= true
-    while (searchCriteria.length < maxCriteria && continueSearch){
-        const trait= prompt(`Enter Trait ${searchCriteria.length +1}:eyeColor,weight,height,gender,occupation`);
+
+    while (searchCriteria.length < 5){
+        const trait= validatedPrompt("Enter Trait:" [eyeColor,weight,height,gender,occupation]);
         const validTraits= ["eyeColor","height","gender","occupation","weight"];
-        if(validTraits.includes(trait)){
-            alert("Invalid Trait");
-            return true
         }
         const value = prompt(`Enter trait ${trait}`);
         searchCriteria.push({trait,value});
         continueSearch= confirm ("Do you want to continue searching?");
-        let filteredPeople = people;
         for(const criteria of searchCriteria){
             filteredPeople= filteredPeople.filter(person =>[criteria.trait]== criteria.value);
         }
         displayPeople("Search Results", filteredPeople)
 
     }
-}
+
 
 function searchById(people) {
     const idToSearchForString = prompt('Please enter the id of the person you are searching for.');
