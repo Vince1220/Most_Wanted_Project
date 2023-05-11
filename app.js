@@ -13,7 +13,7 @@ function runSearchAndMenu(people) {
     const searchResults = searchPeopleDataSet(people);
 
     if (searchResults.length > 1) {
-        displayPeople('Search Results', searchResults);
+        console.log()
     }
     else if (searchResults.length === 1) {
         const person = searchResults[0];
@@ -40,70 +40,24 @@ function searchPeopleDataSet(people) {
             results = searchByName(people);
             break;
         case 'traits':
-            //! TODO
-           results = searchByTraits(people);
+            results = searchByTraits(people);
+            displayPeople('Results',results)
+            reSearch(results)
             break;
         default:
             return searchPeopleDataSet(people);
     }
-
     return results;
 }
 
-function searchByTraits(people){
-    let searchCriteria= []
-    let filteredPeople= people;
-
-    while (searchCriteria.length < 5){
-        const trait= validatedPrompt("Enter Trait:", [eyeColor,weight,height,gender,occupation]);
-        const validTraits= ["eyeColor","height","gender","occupation","weight"];
-        }
-     }
-
-     switch (trait.toLowerCase()){
-        case "height":
-            const height = parseInt(prompt("Enter the person's height in inches."));
-            filteredPeople = filteredPeople.filter(function(person){return person.height === height});
-            searchCriteria.push(`height =${height}`);
-            break;
-        case "weight":
-                const weight = parseInt(prompt("Enter person's weight in pounds. "));
-                filteredPeople = filteredPeople.filter(function(person){return person.weight === weight});
-                searchCriteria.push(`weight = ${weight}`);
-            break;
-        case "gender":
-            const gender = prompt("Enter the person's gender: male or female");
-            filteredPeople = filteredPeople.filter(function(person){return person.gender.toLowerCase === gender.toLowerCase});
-            searchCriteria.push(`gender =${gender.toLowerCase()}`);
-            break;
-        case "occupation":
-            const occupation = prompt("Enter the person's occupation.");
-            filteredPeople = filteredPeople.filter(function(person){return person.occupation.toLowerCase === occupation.toLowerCase});
-            searchCriteria.push(`occupation = ${occupation.toLowerCase()}`);
-            break;
-        case "eye color":
-            const eyeColor = prompt("Enter the person's eye color.");
-            filteredPeople = filteredPeople.filter(function(person){return person.eyeColor.toLowerCase === eyeColor.toLowerCase});
-            searchCriteria.push(`eyeColor = ${eyeColor.toLowerCase()}`);
-            break;
-            default:
-                alert("Invalid trait entered");
-     }
-
-     if (filteredPeople.length ===0){
-        alert("No matces found.");
-        return [];
-    } else if (filteredPeople.length === 1){
-        alert(`Match found: ${filteredPeople[0].firstName} ${filteredPeople[0].lastName}`);
-        return filteredPeople;
+function reSearch(results) {
+    const reSearchQuestion = validatedPrompt('Would you like to filter the results again? Yes or No'.toLowerCase(),["Yes", "No"]);
+        if (reSearchQuestion === "yes") {
+            const filteredResults = searchByTraits(results);
+            displayPeople('Results',filteredResults);
+            reSearch(filteredResults);
+            }
     }
-
-    const continueSearch = prompt(`Results filtered by ${searchCriteria.join(', ')}.Do you want to continue searching? (y/n)`);
-    if (continueSearch.toLowerCase() === "n"){
-        return filteredPeople;
-    }
-    alert ("Max of five search criteria reached.");
-    return filteredPeople
 
 function searchById(people) {
     const idToSearchForString = prompt('Please enter the id of the person you are searching for.');
@@ -119,6 +73,53 @@ function searchByName(people) {
     return fullNameSearchResults;
 }
 
+function searchByTraits(people) {
+    const traitToSearchFor = validatedPrompt('Please enter the trait you are searching for.', ['gender','eye color','occupation','dob','height','weight']);
+
+    switch (traitToSearchFor) {
+        case 'gender':
+            const genderToSearchFor = validatedPrompt(
+                'Please enter the gender you are searching for.', ['male','female']);
+                const genderSearchResults = people.filter(people => (people.gender.toLowerCase() === genderToSearchFor.toLowerCase()));     
+            return genderSearchResults;
+
+        case "dob":
+            const dobToSearchForStr = prompt('Please enter the dob you are searching for. month/day/year');
+            const dobFilterResults = people.filter(person => person.dob === dobToSearchForStr);
+            return dobFilterResults;
+
+        case "height":
+            const heightToSearchForStr = prompt('Please enter the height of the person you are searching for. (in inches) ');
+            const heightToSearchForInt = parseInt(heightToSearchForStr);
+            const heightFilterResults = people.filter(person => person.height === heightToSearchForInt);
+            return heightFilterResults;
+
+        case "weight":
+            const weightToSearchForStr = prompt('Please enter the weight of the person you are searching for. (in lbs) ');
+            const weightToSearchForInt = parseInt(weightToSearchForStr);
+            const weightFilterResults = people.filter(person => person.weight === weightToSearchForInt);
+            return weightFilterResults;
+
+        case "eye color":
+            const eyeColorToSearchFor = validatedPrompt(
+                'Please enter the eye color you are searching for.',
+                ["brown","black","hazel","blue","green"]
+            );
+
+            const eyeColorSearchResults = people.filter(people => (people.eyeColor.toLowerCase() === eyeColorToSearchFor.toLowerCase()));     
+            return eyeColorSearchResults;
+
+        case "occupation":
+            const occupationToSearchFor = validatedPrompt(
+                'Please enter the occupation you are searching for.',
+                ["programmer","assistant","landscaper","nurse","student","architect","doctor","politician"]
+            );
+
+            const occupationSearchResults = people.filter(people => (people.occupation.toLowerCase() === occupationToSearchFor.toLowerCase()));     
+            return occupationSearchResults;
+        }
+}
+
 function mainMenu(person, people) {
 
     const mainMenuUserActionChoice = validatedPrompt(
@@ -128,16 +129,13 @@ function mainMenu(person, people) {
 
     switch (mainMenuUserActionChoice) {
         case "info":
-            //! TODO
-             displayPersonInfo(person);
-            
+            displayPersonInfo(person);
             break;
         case "family":
-            //! TODO
-             findPersonFamily(person, people);
+            let personFamily = findPersonFamily(person, people);
+            displayPeople('Family', personFamily);
             break;
         case "descendants":
-            //! TODO
             let personDescendants = findPersonDescendants(person, people);
             displayPeople('Descendants', personDescendants);
             break;
@@ -146,32 +144,78 @@ function mainMenu(person, people) {
         default:
             alert('Invalid input. Please try again.');
     }
-
     return mainMenu(person, people);
 }
 
-function displayPeople(displayTitle, peopleToDisplay){
-    const formatedPeopleDisplayText = peopleToDisplay.map(person => `${person.firstName} ${person.lastName}`).join('\n');
-    alert(`${displayTitle}\n\n ${formatedPeopleDisplayText}`);
+function displayPersonInfo(person) {
+    let personInfo = "First Name: " + person.firstName + "\n";
+    personInfo += "Last Name: " + person.lastName + "\n";
+    personInfo += "Gender: " + person.gender + "\n";
+    personInfo += "DOB: " + person.dob + "\n";
+    personInfo += "Height: " + person.height + "\n";
+    personInfo += "Weight: " + person.weight + "\n";
+    personInfo += "Eye Color: " + person.eyeColor + "\n";
+    personInfo += "Occupation: " + person.occupation + "\n";
+
+    alert(personInfo);
 }
-  
-function validatedPrompt(message,acceptableAnswers){
+
+function findPersonFamily(person, people) {
+
+    let parentResults = people.filter(per => per.id === person.parents[0] || per.id === person.parents[1]);   
+    displayPeople("Parents",parentResults)
+    
+    let spouseResults = people.filter(per => per.id === person.currentSpouse)
+    displayPeople("Spouse",spouseResults)
+
+    let siblingResults = people.filter(per => per.parents[0] === person.parents[0] || per.parents[1] === person.parents[1]);
+    displayPeople("Siblings",siblingResults)
+
+}
+
+function findPersonDescendants(person, people) {
+    
+    let allDescendants = []
+    let descendantResults = people.filter(per => per.parents[0] === person.id || per.parents[1] === person.id)
+    for(let desc of descendantResults) {
+        let grandkids = people.filter(per => per.parents[0] === desc.id || per.parents[1] === desc.id)
+        allDescendants = descendantResults.concat(grandkids)
+    }
+    displayPeople("Descendants", allDescendants)
+}
+
+function displayPeople(displayTitle, peopleToDisplay) {
+    const formatedPeopleDisplayText = peopleToDisplay.map(person => `${person.firstName} ${person.lastName}`).join('\n');
+    alert(`${displayTitle}\n\n${formatedPeopleDisplayText}`);
+}
+
+function displayPeople2(displayTitle, peopleToDisplay) {
+    const formatedPeopleDisplayText = peopleToDisplay.map(person => `${person.firstName} ${person.lastName}`).join('\n');
+    alert(`${displayTitle}\n\n${formatedPeopleDisplayText}`);
+}
+
+function validatedPrompt(message, acceptableAnswers) {
     acceptableAnswers = acceptableAnswers.map(aa => aa.toLowerCase());
-    const builtPromptWithAcceptableAnswers = `${message} \n Acceptable Answers: ${acceptableAnswers.map(aa=> `\n -> ${aa}`).join()}`;
-    const userResponse = prompt (builtPromptWithAcceptableAnswers).toLowerCase();
-    if (acceptableAnswers.includes(userResponse)){
+
+    const builtPromptWithAcceptableAnswers = `${message} \nAcceptable Answers: ${acceptableAnswers.map(aa => `\n-> ${aa}`).join('')}`;
+
+    const userResponse = prompt(builtPromptWithAcceptableAnswers).toLowerCase();
+
+    if (acceptableAnswers.includes(userResponse)) {
         return userResponse;
     }
     else {
-        alert(`"${userResponse}" is not a valid response, try again.: \n ${acceptableAnswers.map(aa => `\n -> ${aa}`).join("")}`);
+        alert(`"${userResponse}" is not an acceptable response. The acceptable responses include:\n${acceptableAnswers.map(aa => `\n-> ${aa}`).join('')} \n\nPlease try again.`);
         return validatedPrompt(message, acceptableAnswers);
     }
 }
-function exitOrRestart(people){
+
+function exitOrRestart(people) {
     const userExitOrRestartChoice = validatedPrompt(
-        "Would you ike to exit or restart?",
-        ["exit", "restart"]
+        'Would you like to exit or restart?',
+        ['exit', 'restart']
     );
+
     switch (userExitOrRestartChoice) {
         case 'exit':
             return;
@@ -182,56 +226,4 @@ function exitOrRestart(people){
             return exitOrRestart(people);
     }
 
-
-
-    function displayPersonInfo(person){
-        let infoForPerson = "First Name: " + person.firstName+ "\n";
-        infoForPerson += "Last Name: " + person.lastName+ "\n";
-        infoForPerson += "Gender: " + person.gender+ "\n";
-        infoForPerson += "Weight: " + person.weight+ "\n";
-        infoForPerson += "Eye Color: " + person.eyeColor+ "\n";
-        infoForPerson += "Height: " + person.height+ "\n";
-        infoForPerson += "Occupation: "+ person.occupation+ "\n";
-        alert(infoForPerson)
-        
-}
-
-function findPersonFamily(targetPerson, people) {
-    const family = people.filter(function(person) {
-      return person.lastName === targetPerson.lastName && person !== targetPerson;
-    });
-  
-    const familyWithRelationships = family.map(function(person) {
-      let relationship = "";
-      if (person.currentSpouse === targetPerson.id) {
-        relationship = "Partner";
-      } else if (person.parents.includes(targetPerson.id)) {
-        relationship = "Parent";
-      } else if (targetPerson.parents.includes(person.id)) {
-        relationship = "Child";
-      }  else if ((person.gender === "male" || person.gender === "female") && (targetPerson.gender === "female" || targetPerson.gender === "male")) {
-        relationship = "Sibling";
-    }
-    person.relationship = relationship;
-    return person;
-  });
-  const familyNamesWithRelationships = familyWithRelationships.map(function(person) {
-      return `${person.firstName} ${person.lastName} (${person.relationship})`;
-    });
-  
-    alert(`Family members of ${targetPerson.firstName} ${targetPerson.lastName}: ${familyNamesWithRelationships}`);
-  }
-
-  function findPersonDescendants(person, people){
-    let personDescendants = [];
-
-    function findDescendants(parent, people) {
-        let children = people.filter(function(person){return person.parents.includes(parent.id)});
-        for(let child of children) {
-            personDescendants.push(child);
-            findDescendants(child, people);
-        }
-    }
-    findDescendants(person, people);
-    displayPeople(`Descendants of ${person.firstName} ${person.lastName} `, personDescendants);}
 }
