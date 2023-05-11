@@ -162,27 +162,26 @@ function displayPeople(displayTitle, peopleToDisplay){
     alert(`${displayTitle}\n\n ${formatedPeopleDisplayText}`);
 }
   
-
-function findPersonDecendants(people,person){
-    let children = people.filter(p=>p.parents.includes(person.id))
-    let grandchildren =[]
-    for (let i=0; i <children.length;i++){
-        let child = children[i];
-        grandchildren.concat(people.filter(p=>p.parents.includes(child.id)))
-
-        }
-
-        displayPeople("Children",children);
-        for (let i=0; i< children.length;i++){
-            let grandchildren = people.filter(p.parents.includes(children[i].id));
-            if (grandchildren.length>0){
-                displayPeople("Grandchildren",grandchildren);
-                decendants = decendants.concat(grandchildren);
-                decendants = decendants.concat(findDecendants(grandchildren, people));
-            }
-        }
-        displayPeople("Grandchildren", grandchildren);
+function validatedPrompt(message,acceptableAnswers){
+    acceptableAnswers = acceptableAnswers.map(aa => aa.toLowerCase());
+    const builtPromptWithAcceptableAnswers = `${message} \n Acceptable Answers: ${acceptableAnswers.map(aa=> `\n -> ${aa}`).join("")}`;
+    const userResponse = prompt (builtPromptWithAcceptableAnswers).toLowerCase();
+    if (acceptableAnswers.includes(userResponse)){
+        return userResponse;
     }
+    else {
+        alert(`"${userResponse}" is not a valid response, try again.: \n ${acceptableAnswers.map(aa => `\n -> ${aa}`).join("")}`);
+        return validatedPrompt(message, acceptableAnswers);
+    }
+}
+function exitOrRestart(people){
+    const userExitOrRestartChoice = validatedPrompt(
+        "Would you ike to exit or restart?"
+        ["exit", "restart"]
+    );
+}
+
+      
 
     function findFamily(people,person){
         let spouse = people.filter(p=> p.id === person.currentSpouse)
