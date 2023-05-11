@@ -181,60 +181,6 @@ function exitOrRestart(people){
     );
 }
 
-      
-
-    function findFamily(people,person){
-        let spouse = people.filter(p=> p.id === person.currentSpouse)
-        displayPeople("Spouse", spouse)
-        let parents = people.filter(p=> person.parents(p.id))
-        displayPeople("Parents", parents)
-
-        let siblings = people.filter(p=>{
-            if (p.id !== person.id){
-                for(let i=0; i<person.parents.length; i++){
-                if(p.parents.includes(person, parents [i])){
-                    return true
-                }
-            }
-        }
-        return false
-        })
-        displayPeople("Siblings", siblings)
-    }
-
-    function findSpouseId(people, person){
-        const familyMember = people.filter(p=> p.id === person.currentSpouse)
-        return familyMember
-    }
-
-
-function displayPeople(displayTitle, peopleToDisplay) {
-    const formatedPeopleDisplayText = peopleToDisplay.map(person => `${person.firstName} ${person.lastName}`).join('\n');
-    alert(`${displayTitle}\n\n${formatedPeopleDisplayText}`);
-}
-
-function validatedPrompt(message, acceptableAnswers) {
-    acceptableAnswers = acceptableAnswers.map(aa => aa.toLowerCase());
-
-    const builtPromptWithAcceptableAnswers = `${message} \nAcceptable Answers: ${acceptableAnswers.map(aa => `\n-> ${aa}`).join('')}`;
-
-    const userResponse = prompt(builtPromptWithAcceptableAnswers).toLowerCase();
-
-    if (acceptableAnswers.includes(userResponse)) {
-        return userResponse;
-    }
-    else {
-        alert(`"${userResponse}" is not an acceptable response. The acceptable responses include:\n${acceptableAnswers.map(aa => `\n-> ${aa}`).join('')} \n\nPlease try again.`);
-        return validatedPrompt(message, acceptableAnswers);
-    }
-}
-
-function exitOrRestart(people) {
-    const userExitOrRestartChoice = validatedPrompt(
-        'Would you like to exit or restart?',
-        ['exit', 'restart']
-    );
-
     switch (userExitOrRestartChoice) {
         case 'exit':
             return;
@@ -245,4 +191,42 @@ function exitOrRestart(people) {
             return exitOrRestart(people);
     }
 
-} 
+    function displayPersonInfo(person){
+        let infoForPerson = "First Name: " + person.firstName+ "\n";
+        infoForPerson += "Last Name: " + person.lastName+ "\n";
+        infoForPerson += "Gender: " + person.gender+ "\n";
+        infoForPerson += "Weight: " + person.weight+ "\n";
+        infoForPerson += "Eye Color: " + person.eyeColor+ "\n";
+        infoForPerson += "Height: " + person.height+ "\n";
+        infoForPerson += "Occupation: "+ person.occupation+ "\n";
+        alert(infoForPerson)
+        
+}
+
+function findPersonFamily(targetPerson, people) {
+    const family = people.filter(function(person) {
+      return person.lastName === targetPerson.lastName && person !== targetPerson;
+    });
+  
+    const familyWithRelationships = family.map(function(person) {
+      let relationship = "";
+      if (person.currentSpouse === targetPerson.id) {
+        relationship = "Partner";
+      } else if (person.parents.includes(targetPerson.id)) {
+        relationship = "Parent";
+      } else if (targetPerson.parents.includes(person.id)) {
+        relationship = "Child";
+      }  else if ((person.gender === "male" || person.gender === "female") && (targetPerson.gender === "female" || targetPerson.gender === "male")) {
+        relationship = "Sibling";
+    }
+    person.relationship = relationship;
+    return person;
+  });
+  const familyNamesWithRelationships = familyWithRelationships.map(function(person) {
+      return `${person.firstName} ${person.lastName} (${person.relationship})`;
+    });
+  
+    alert(`Family members of ${targetPerson.firstName} ${targetPerson.lastName}: ${familyNamesWithRelationships}`);
+  }
+
+  
