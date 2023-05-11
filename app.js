@@ -99,7 +99,12 @@ function searchByTraits(people){
         return filteredPeople
     }
 
-    const continueSearch = 
+    const continueSearch = prompt("Do you want to keep searching? yes or no");
+    if (continueSearch.toLowerCase() === "n"){
+        return filteredPeople;
+    }
+    alert ("Max of five search criteria reached.");
+    return filteredPeople
 
 
 function searchById(people) {
@@ -127,32 +132,7 @@ function mainMenu(person, people) {
         case "info":
             //! TODO
             // displayPersonInfo(person);
-            function displayPerson(person){
-                let personInfo =`first name:${person.firstName}\n`;
-                personInfo += `last name:${person.lastName}\n`;
-                personInfo += `id:${person.id}\n`;
-                personInfo += `gender:${person.gender}\n`;
-                personInfo += `dob:${person.dob}\n`;
-                personInfo += `height:${person.height}\n`;
-                personInfo += `weight:${person.weight}\n`;
-                personInfo += `eyecolor:${person.eyeColor}\n`;
-                personInfo += `occupation:${person.occupation}\n`;
-                personInfo += `parents:${person.parents}\n`;
-                personInfo += `currentspouse:${person.currentSpouse}\n`;
-            alert(`${person.id}`);
-            alert(`${person.firstName}`);
-            alert(`${person.lastName}`);
-            alert(`${person.gender}`);
-            alert(`${person.dob}`);
-            alert(`${person.height}`);
-            alert(`${person.weight}`);
-            alert(`${person.eyeColor}`);
-            alert(`${person.occupation}`);
-            alert(`${person.parents}`);
-            alert(`${person.currentSpouse}`)
-            alert(displayPersonInfo);
-            let displayPersonInfo= displayPerson(person[0]);
-            }
+            
             break;
         case "family":
             //! TODO
