@@ -157,18 +157,10 @@ function mainMenu(person, people) {
     return mainMenu(person, people);
 }
 
-function searchbyEyeColor(people){
-    let eyeColor = promptFor("What is the person's eye color?", chars);
-    let foundPerson = people.filter(function(person){
-      if(person.eyeColor === eyeColor){
-      return true;
-      }
-      else{
-        return false;
-      }
-  })
-  return foundPerson[0];
-  }
+function displayPeople(displayTitle, peopleToDisplay){
+    const formatedPeopleDisplayText = peopleToDisplay.map(person => `${person.firstName} ${person.lastName}`).join('\n');
+    alert(`${displayTitle}\n\n ${formatedPeopleDisplayText}`);
+}
   
 
 function findPersonDecendants(people,person){
