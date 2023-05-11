@@ -229,4 +229,18 @@ function findPersonFamily(targetPerson, people) {
     alert(`Family members of ${targetPerson.firstName} ${targetPerson.lastName}: ${familyNamesWithRelationships}`);
   }
 
+  function findPersonDescendants(person, people){
+    let personDescendants = [];
+
+    function findDescendants(parent, people) {
+        let children = people.filter(function(person){return person.parents.includes(parent.id)});
+        for(let child of children) {
+            personDescendants.push(child);
+            findDescendants(child, people);
+        }
+    }
+    findDescendants(person, people);
+    displayPeople(`Descendants of ${person.firstName} ${person.lastName} `, personDescendants);
+}
+
   
