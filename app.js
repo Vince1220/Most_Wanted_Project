@@ -53,7 +53,6 @@ function searchPeopleDataSet(people) {
 function searchByTraits(people){
     let searchCriteria= []
     let filteredPeople= people;
-    let continueSearch= true
 
     while (searchCriteria.length < 5){
         const trait= validatedPrompt("Enter Trait:", [eyeColor,weight,height,gender,occupation]);
@@ -85,7 +84,7 @@ function searchByTraits(people){
         case "eye color":
             const eyeColor = prompt("Enter the person's eye color.");
             filteredPeople = filteredPeople.filter(function(person){return person.eyeColor.toLowerCase === eyeColor.toLowerCase});
-            searchCriteria.push(`eyeColor = ${eyeColor.toLowerCase}`);
+            searchCriteria.push(`eyeColor = ${eyeColor.toLowerCase()}`);
             break;
             default:
                 alert("Invalid trait entered");
@@ -96,16 +95,15 @@ function searchByTraits(people){
         return [];
     } else if (filteredPeople.length === 1){
         alert(`Match found: ${filteredPeople[0].firstName} ${filteredPeople[0].lastName}`);
-        return filteredPeople
+        return filteredPeople;
     }
 
-    const continueSearch = prompt("Do you want to keep searching? yes or no");
+    const continueSearch = prompt(`Results filtered by ${searchCriteria.join(', ')}.Do you want to continue searching? (y/n)`);
     if (continueSearch.toLowerCase() === "n"){
         return filteredPeople;
     }
     alert ("Max of five search criteria reached.");
     return filteredPeople
-
 
 function searchById(people) {
     const idToSearchForString = prompt('Please enter the id of the person you are searching for.');
@@ -136,17 +134,12 @@ function mainMenu(person, people) {
             break;
         case "family":
             //! TODO
-             let personFamily = findPersonFamily(person, people);
-             displayPeople('Family', personFamily);
+             findPersonFamily(person, people);
             break;
         case "descendants":
             //! TODO
             let personDescendants = findPersonDescendants(person, people);
             displayPeople('Descendants', personDescendants);
-            if (personDescendants.length == 0){
-                alert("No descendant found.")
-            }
-            else (displayPeople(personDescendants));
             break;
         case "quit":
             return;
@@ -164,7 +157,7 @@ function displayPeople(displayTitle, peopleToDisplay){
   
 function validatedPrompt(message,acceptableAnswers){
     acceptableAnswers = acceptableAnswers.map(aa => aa.toLowerCase());
-    const builtPromptWithAcceptableAnswers = `${message} \n Acceptable Answers: ${acceptableAnswers.map(aa=> `\n -> ${aa}`).join("")}`;
+    const builtPromptWithAcceptableAnswers = `${message} \n Acceptable Answers: ${acceptableAnswers.map(aa=> `\n -> ${aa}`).join()}`;
     const userResponse = prompt (builtPromptWithAcceptableAnswers).toLowerCase();
     if (acceptableAnswers.includes(userResponse)){
         return userResponse;
@@ -176,11 +169,9 @@ function validatedPrompt(message,acceptableAnswers){
 }
 function exitOrRestart(people){
     const userExitOrRestartChoice = validatedPrompt(
-        "Would you ike to exit or restart?"
+        "Would you ike to exit or restart?",
         ["exit", "restart"]
     );
-}
-
     switch (userExitOrRestartChoice) {
         case 'exit':
             return;
@@ -190,6 +181,8 @@ function exitOrRestart(people){
             alert('Invalid input. Please try again.');
             return exitOrRestart(people);
     }
+
+
 
     function displayPersonInfo(person){
         let infoForPerson = "First Name: " + person.firstName+ "\n";
@@ -240,7 +233,5 @@ function findPersonFamily(targetPerson, people) {
         }
     }
     findDescendants(person, people);
-    displayPeople(`Descendants of ${person.firstName} ${person.lastName} `, personDescendants);
+    displayPeople(`Descendants of ${person.firstName} ${person.lastName} `, personDescendants);}
 }
-
-  
